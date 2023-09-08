@@ -3,12 +3,14 @@ import movieData from '../../data/movies.json';
 
 function Movies() {
     const [movies, setMovies] = useState([]);
+    const [moviesFiltered, setMoviesFilered] = useState([]);
 
     useEffect(() => {
       setMovies(movieData);
+      setMoviesFilered(movieData);
     }, []);
 
-    const movieRows = movies.map(movie => (
+    const movieRows = moviesFiltered.map(movie => (
         <tr key={movie.id}>
             <td>{movie.title}</td>
             <td>{movie.year}</td>
@@ -17,9 +19,15 @@ function Movies() {
         </tr>
     ));
 
-    console.log('movies', movies);
+    const onTextInputChange = (text) => {
+        const filtered = text.length === 0
+            ? movies
+            : movies.filter(movie => movie.title.toLowerCase().includes(text.toLowerCase()));
 
-    return movies && (
+        setMoviesFilered(filtered);
+    }
+
+    return (
         <table border="true">
             <thead>
                 <tr>
@@ -27,6 +35,12 @@ function Movies() {
                     <th>Year</th>
                     <th>Genre</th>
                     <th>Description</th>
+                </tr>
+                <tr>
+                    <td><input type="text" onChange={(event) => onTextInputChange(event.target.value)} /></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </thead>
             <tbody>
