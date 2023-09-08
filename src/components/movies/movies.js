@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import movieData from '../../data/movies.json';
+import TextFilter from '../text-filter/TextFilter';
 
 function Movies() {
     const [movies, setMovies] = useState([]);
@@ -19,10 +20,10 @@ function Movies() {
         </tr>
     ));
 
-    const onTextInputChange = (text) => {
+    const onTitleFilterChange = (text) => {
         const filtered = text.length === 0
             ? movies
-            : movies.filter(movie => movie.title.toLowerCase().includes(text.toLowerCase()));
+            : movies.filter(movie => movie.title.toLowerCase().includes(text.trim().toLowerCase()));
 
         setMoviesFilered(filtered);
     }
@@ -37,7 +38,7 @@ function Movies() {
                     <th>Description</th>
                 </tr>
                 <tr>
-                    <td><input type="text" onChange={(event) => onTextInputChange(event.target.value)} /></td>
+                    <td><TextFilter onTextChange={text => onTitleFilterChange(text)} /></td>
                     <td></td>
                     <td></td>
                     <td></td>
