@@ -47,8 +47,8 @@ function Movies() {
                     <th>Description</th>
                 </tr>
                 <tr>
-                    <td><TextFilter onTextChange={setTitleFilter} /></td>
-                    <td><TextFilter onTextChange={setYearFilter} /></td>
+                    <td><TextFilter onTextChanged={setTitleFilter} onResetClicked={setTitleFilter} /></td>
+                    <td><TextFilter onTextChanged={setYearFilter} onResetClicked={setYearFilter} /></td>
                     <td></td>
                     <td></td>
                 </tr>
