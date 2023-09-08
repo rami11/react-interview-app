@@ -1,8 +1,9 @@
 import './App.css';
+import Movies from './movies/movies';
 
 function App() {
   return (
-    <div>It works!</div>
+    <Movies />
   );
 }
 
