@@ -4,12 +4,18 @@ import TextFilter from '../text-filter/TextFilter';
 
 function Movies() {
     const [movies, setMovies] = useState([]);
-    const [moviesFiltered, setMoviesFilered] = useState([]);
+    const [moviesFiltered, setMoviesFiltered] = useState([]);
+    const [titleFilter, setTitleFilter] = useState('');
+    const [yearFilter, setYearFilter] = useState('');
 
     useEffect(() => {
-      setMovies(movieData);
-      setMoviesFilered(movieData);
-    }, []);
+        setMovies(movieData);
+        setMoviesFiltered(movieData);
+    }, [movies]);
+
+    useEffect(() => {
+        filterMovies();
+    }, [titleFilter, yearFilter]);
 
     const movieRows = moviesFiltered.map(movie => (
         <tr key={movie.id}>
@@ -20,12 +26,15 @@ function Movies() {
         </tr>
     ));
 
-    const onTitleFilterChange = (text) => {
-        const filtered = text.length === 0
+    const filterMovies = () => {
+        const filtered = titleFilter.length === 0 && yearFilter.length === 0
             ? movies
-            : movies.filter(movie => movie.title.toLowerCase().includes(text.trim().toLowerCase()));
+            : movies.filter(movie => (
+                    movie.title.toLowerCase().includes(titleFilter.trim().toLowerCase()) &&
+                    `${movie.year}`.includes(yearFilter.trim())
+                ));
 
-        setMoviesFilered(filtered);
+        setMoviesFiltered(filtered);
     }
 
     return (
@@ -38,8 +47,8 @@ function Movies() {
                     <th>Description</th>
                 </tr>
                 <tr>
-                    <td><TextFilter onTextChange={text => onTitleFilterChange(text)} /></td>
-                    <td></td>
+                    <td><TextFilter onTextChange={setTitleFilter} /></td>
+                    <td><TextFilter onTextChange={setYearFilter} /></td>
                     <td></td>
                     <td></td>
                 </tr>
