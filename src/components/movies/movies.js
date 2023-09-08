@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import movieData from '../../data/movies.json';
 import TextFilter from '../text-filter/TextFilter';
+import './Movies.css';
 
 function Movies() {
     const [movies, setMovies] = useState([]);
@@ -19,7 +20,7 @@ function Movies() {
     }, [titleFilter, yearFilter, descriptionFilter]);
 
     const movieRows = moviesFiltered.map(movie => (
-        <tr key={movie.id}>
+        <tr key={movie.id} className={movie.year < 1995 ? 'bg-yellow' : ''}>
             <td>{movie.title}</td>
             <td>{movie.year}</td>
             <td>{movie.genre.join(', ')}</td>
