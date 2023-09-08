@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function TextFilter({onTextChanged, onResetClicked}) {
+function TextFilter({placeholder, onTextChanged, onResetClicked}) {
     const [text, setText] = useState('');
 
     const handleTextChange = (event) => {
@@ -16,7 +16,7 @@ function TextFilter({onTextChanged, onResetClicked}) {
 
     return (
         <>
-            <input type="text" value={text} onChange={handleTextChange} />
+            <input type="text" placeholder={placeholder} value={text} onChange={handleTextChange} />
             <button onClick={handleResetClick}>x</button>
         </>
     );

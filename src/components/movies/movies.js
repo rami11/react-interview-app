@@ -7,6 +7,7 @@ function Movies() {
     const [moviesFiltered, setMoviesFiltered] = useState([]);
     const [titleFilter, setTitleFilter] = useState('');
     const [yearFilter, setYearFilter] = useState('');
+    const [descriptionFilter, setDescriptionFilter] = useState('');
 
     useEffect(() => {
         setMovies(movieData);
@@ -15,23 +16,24 @@ function Movies() {
 
     useEffect(() => {
         filterMovies();
-    }, [titleFilter, yearFilter]);
+    }, [titleFilter, yearFilter, descriptionFilter]);
 
     const movieRows = moviesFiltered.map(movie => (
         <tr key={movie.id}>
             <td>{movie.title}</td>
             <td>{movie.year}</td>
-            <td>{movie.genre}</td>
+            <td>{movie.genre.join(', ')}</td>
             <td>{movie.description}</td>
         </tr>
     ));
 
     const filterMovies = () => {
-        const filtered = titleFilter.length === 0 && yearFilter.length === 0
+        const filtered = titleFilter.length === 0 && yearFilter.length === 0 && descriptionFilter.length === 0
             ? movies
             : movies.filter(movie => (
                     movie.title.toLowerCase().includes(titleFilter.trim().toLowerCase()) &&
-                    `${movie.year}`.includes(yearFilter.trim())
+                    `${movie.year}`.includes(yearFilter.trim()) &&
+                    movie.description.toLowerCase().includes(descriptionFilter.trim().toLowerCase())
                 ));
 
         setMoviesFiltered(filtered);
@@ -50,7 +52,7 @@ function Movies() {
                     <td><TextFilter onTextChanged={setTitleFilter} onResetClicked={setTitleFilter} /></td>
                     <td><TextFilter onTextChanged={setYearFilter} onResetClicked={setYearFilter} /></td>
                     <td></td>
-                    <td></td>
+                    <td><TextFilter onTextChanged={setDescriptionFilter} onResetClicked={setDescriptionFilter} /></td>
                 </tr>
             </thead>
             <tbody>
