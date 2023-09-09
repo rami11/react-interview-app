@@ -1,23 +1,28 @@
 import { useEffect, useState } from 'react';
 import movieData from '../../data/movies.json';
+import genreData from '../../data/genres.json';
 import TextFilter from '../text-filter/TextFilter';
 import './Movies.css';
+import SelectFilter from '../select-filter/SelectFilter';
 
 function Movies() {
+    const [genres, setGenres] = useState([]);
     const [movies, setMovies] = useState([]);
     const [moviesFiltered, setMoviesFiltered] = useState([]);
     const [titleFilter, setTitleFilter] = useState('');
     const [yearFilter, setYearFilter] = useState('');
+    const [genereFilter, setGenereFilter] = useState('');
     const [descriptionFilter, setDescriptionFilter] = useState('');
 
     useEffect(() => {
         setMovies(movieData);
+        setGenres(genreData);
         setMoviesFiltered(movieData);
     }, [movies]);
 
     useEffect(() => {
         filterMovies();
-    }, [titleFilter, yearFilter, descriptionFilter]);
+    }, [titleFilter, yearFilter, genereFilter, descriptionFilter]);
 
     const movieRows = moviesFiltered.map(movie => (
         <tr key={movie.id} className={movie.year < 1995 ? 'bg-yellow' : ''}>
@@ -29,11 +34,12 @@ function Movies() {
     ));
 
     const filterMovies = () => {
-        const filtered = titleFilter.length === 0 && yearFilter.length === 0 && descriptionFilter.length === 0
+        const filtered = titleFilter.length === 0 && yearFilter.length === 0 && genereFilter === null && descriptionFilter.length === 0
             ? movies
             : movies.filter(movie => (
                     movie.title.toLowerCase().includes(titleFilter.trim().toLowerCase()) &&
                     `${movie.year}`.includes(yearFilter.trim()) &&
+                    movie.genre.join().includes(genereFilter) &&
                     movie.description.toLowerCase().includes(descriptionFilter.trim().toLowerCase())
                 ));
 
@@ -52,7 +58,7 @@ function Movies() {
                 <tr>
                     <td><TextFilter onTextChanged={setTitleFilter} onResetClicked={setTitleFilter} /></td>
                     <td><TextFilter onTextChanged={setYearFilter} onResetClicked={setYearFilter} /></td>
-                    <td></td>
+                    <td><SelectFilter options={genres} onSelectChanged={setGenereFilter} onResetClicked={setGenereFilter} /></td>
                     <td><TextFilter onTextChanged={setDescriptionFilter} onResetClicked={setDescriptionFilter} /></td>
                 </tr>
             </thead>
